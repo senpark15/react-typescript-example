@@ -1,34 +1,40 @@
 import * as React from 'react';
+import authStore from './store/AuthStore';
+
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
+import LoginForm from './components/setup/LoginForm';
 import {
   BrowserRouter as Router,
   Route,
-  Link
-} from 'react-router-dom'
-import './App.css';
+  Link,
+  Redirect
+} from 'react-router-dom';
 
-const logo = require('./logo.svg');
+const PrivateRoute = ({ component: Component, ...rest }: any) => (
+  <Route {...rest} render={props => (
+    authStore.user ? (
+      <Component {...props} />
+    ) : (
+        <Redirect to={{
+          pathname: '/login',
+          state: { from: props.location }
+        }} />
+      )
+  )} />
+)
 
 class App extends React.Component {
   render() {
     return (
       <Router>
-    <div>
-      <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/login">About</Link></li>
-        <li><Link to="/register">Topics</Link></li>
-      </ul>
-
-      <hr/>
-
-      <Route exact path="/" component={Home}/>
-      <Route path="/login" component={Login}/>
-      <Route path="/register" component={Register}/>
-    </div>
-  </Router>
+        <div>
+          <PrivateRoute exact path="/" component={Home} />
+          <Route path="/login" component={Login}/>
+          <Route path="/register" component={Register} />
+        </div>
+      </Router>
     );
   }
 }

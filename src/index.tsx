@@ -2,9 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { TodoList } from './TodoList';
 import App from './App';
-import { observableTodoStore } from './store/TodoStore';
 import registerServiceWorker from './registerServiceWorker';
-import './index.css';
+import './main.css';
+import 'font-awesome/css/font-awesome.css';
 
 ReactDOM.render(
   <App />,
